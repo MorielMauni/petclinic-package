@@ -26,27 +26,21 @@ variable "fallback_build_id" {
   default = "default-build"
 }
 
-locals {
-  # Sanitize artifactId and jenkinsBuildId to allow only valid characters
-  sanitized_artifactId = replace(var.artifactId, "/[^a-zA-Z0-9_-]/", "")
-  sanitized_jenkinsBuildId = replace(var.jenkinsBuildId, "/[^a-zA-Z0-9_-]/", "")
-}
-
 source "amazon-ebs" "example" {
   profile        = "default"
   region         = var.region
   instance_type  = "t2.micro"
   source_ami     = var.source_ami
   ssh_username   = "ubuntu"
-  ami_name       = "${local.sanitized_artifactId}-${local.sanitized_jenkinsBuildId}-${timestamp()}"
+  ami_name       = "${clean_resource_name("${var.artifactId}-${var.jenkinsBuildId}-${timestamp()}")}"
   ami_description = "PetClinic Amazon Ubuntu Image"
   run_tags = {
-    Name = "${local.sanitized_artifactId}-${local.sanitized_jenkinsBuildId}"
+    Name = "${clean_resource_name("${var.artifactId}-${var.jenkinsBuildId}")}"
   }
   tags = {
     Tool    = "Packer"
-    Name    = "${local.sanitized_artifactId}-${local.sanitized_jenkinsBuildId}"
-    build_id = "${local.sanitized_artifactId}-${local.sanitized_jenkinsBuildId}"
+    Name    = "${clean_resource_name("${var.artifactId}-${var.jenkinsBuildId}")}"
+    build_id = "${clean_resource_name("${var.artifactId}-${var.jenkinsBuildId}")}"
     Author  = "ochoa"
   }
 }
