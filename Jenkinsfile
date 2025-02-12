@@ -65,7 +65,7 @@ pipeline  {
           echo "This is varJenkinsBuildId $varJenkinsBuildId"
           echo "This is varArtifactId $varArtifactId"
 
-          sh "/usr/local/bin/packer build -var $varBuildId -var $varJenkinsBuildId -var $varArtifactId ./ami.json"
+          sh "/usr/local/bin/packer build -var $varBuildId -var $varJenkinsBuildId -var $varArtifactId ./ami.pkr.hcl"
         }
       }
     }
