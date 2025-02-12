@@ -32,15 +32,15 @@ source "amazon-ebs" "example" {
   instance_type  = "t2.micro"
   source_ami     = var.source_ami
   ssh_username   = "ubuntu"
-  ami_name       = "${clean_resource_name(var.artifactId | default(var.fallback_artifact))}-${clean_resource_name(var.jenkinsBuildId | default(var.fallback_build_id))}-${timestamp()}"
+  ami_name       = "${clean_resource_name(coalesce(var.artifactId, var.fallback_artifact))}-${clean_resource_name(coalesce(var.jenkinsBuildId, var.fallback_build_id))}-${timestamp()}"
   ami_description = "PetClinic Amazon Ubuntu Image"
   run_tags = {
-    Name = "${var.artifactId | default(var.fallback_artifact)}-${var.jenkinsBuildId | default(var.fallback_build_id)}"
+    Name = "${coalesce(var.artifactId, var.fallback_artifact)}-${coalesce(var.jenkinsBuildId, var.fallback_build_id)}"
   }
   tags = {
     Tool    = "Packer"
-    Name    = "${var.artifactId | default(var.fallback_artifact)}-${var.jenkinsBuildId | default(var.fallback_build_id)}"
-    build_id = "${var.artifactId | default(var.fallback_artifact)}-${var.jenkinsBuildId | default(var.fallback_build_id)}"
+    Name    = "${coalesce(var.artifactId, var.fallback_artifact)}-${coalesce(var.jenkinsBuildId, var.fallback_build_id)}"
+    build_id = "${coalesce(var.artifactId, var.fallback_artifact)}-${coalesce(var.jenkinsBuildId, var.fallback_build_id)}"
     Author  = "ochoa"
   }
 }
