@@ -27,9 +27,9 @@ variable "fallback_build_id" {
 }
 
 locals {
-  # Replace any non-alphanumeric characters in the artifactId and jenkinsBuildId
-  sanitized_artifactId = replace(var.artifactId, "/[^a-zA-Z0-9_-]+/", "")
-  sanitized_jenkinsBuildId = replace(var.jenkinsBuildId, "/[^a-zA-Z0-9_-]+/", "")
+  # Sanitize artifactId and jenkinsBuildId to allow only valid characters
+  sanitized_artifactId = replace(var.artifactId, "/[^a-zA-Z0-9_-]/", "")
+  sanitized_jenkinsBuildId = replace(var.jenkinsBuildId, "/[^a-zA-Z0-9_-]/", "")
 }
 
 source "amazon-ebs" "example" {
