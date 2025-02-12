@@ -1,5 +1,5 @@
 pipeline  {
-  agent any; 
+  agent any;
 
   options {
     disableConcurrentBuilds()
@@ -10,7 +10,7 @@ pipeline  {
     this_version = ""
     this_artifact = ""
     this_full_build_id = ""
-    this_jenkins_build_id= ""
+    this_jenkins_build_id = ""
     props = ""
     FilePropertiesLocation = ""
     ProjectName = "petclinic-spring"
