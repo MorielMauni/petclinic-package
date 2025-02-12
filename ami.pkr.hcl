@@ -26,21 +26,27 @@ variable "fallback_build_id" {
   default = "default-build"
 }
 
+locals {
+  # Replace any non-alphanumeric characters in the artifactId and jenkinsBuildId
+  sanitized_artifactId = replace(var.artifactId, "/[^a-zA-Z0-9_-]+/", "")
+  sanitized_jenkinsBuildId = replace(var.jenkinsBuildId, "/[^a-zA-Z0-9_-]+/", "")
+}
+
 source "amazon-ebs" "example" {
   profile        = "default"
   region         = var.region
   instance_type  = "t2.micro"
   source_ami     = var.source_ami
   ssh_username   = "ubuntu"
-  ami_name       = "${coalesce(var.artifactId, var.fallback_artifact)}-${coalesce(var.jenkinsBuildId, var.fallback_build_id)}-${timestamp()}"
+  ami_name       = "${local.sanitized_artifactId}-${local.sanitized_jenkinsBuildId}-${timestamp()}"
   ami_description = "PetClinic Amazon Ubuntu Image"
   run_tags = {
-    Name = "${coalesce(var.artifactId, var.fallback_artifact)}-${coalesce(var.jenkinsBuildId, var.fallback_build_id)}"
+    Name = "${local.sanitized_artifactId}-${local.sanitized_jenkinsBuildId}"
   }
   tags = {
     Tool    = "Packer"
-    Name    = "${coalesce(var.artifactId, var.fallback_artifact)}-${coalesce(var.jenkinsBuildId, var.fallback_build_id)}"
-    build_id = "${coalesce(var.artifactId, var.fallback_artifact)}-${coalesce(var.jenkinsBuildId, var.fallback_build_id)}"
+    Name    = "${local.sanitized_artifactId}-${local.sanitized_jenkinsBuildId}"
+    build_id = "${local.sanitized_artifactId}-${local.sanitized_jenkinsBuildId}"
     Author  = "ochoa"
   }
 }
