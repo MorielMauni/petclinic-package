@@ -37,9 +37,17 @@ pipeline  {
 
           this_group = props.Group
           this_version = props.Version
-          this_artifact = props.ArtifactId
+          this_artifact = props.ArtifactId.replaceAll("[^a-zA-Z0-9()\
+
+\[\\]
+
+ ./-'_@]", "_")
           this_full_build_id = props.FullBuildId
-          this_jenkins_build_id = props.JenkinsBuildId
+          this_jenkins_build_id = props.JenkinsBuildId.replaceAll("[^a-zA-Z0-9()\
+
+\[\\]
+
+ ./-'_@]", "_")
         }
 
         sh "echo Finished setting this_group = $this_group"
