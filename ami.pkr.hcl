@@ -32,7 +32,7 @@ source "amazon-ebs" "example" {
   instance_type  = "t2.micro"
   source_ami     = var.source_ami
   ssh_username   = "ubuntu"
-  ami_name       = "${clean_resource_name(coalesce(var.artifactId, var.fallback_artifact))}-${clean_resource_name(coalesce(var.jenkinsBuildId, var.fallback_build_id))}-${timestamp()}"
+  ami_name       = "${coalesce(var.artifactId, var.fallback_artifact)}-${coalesce(var.jenkinsBuildId, var.fallback_build_id)}-${timestamp()}"
   ami_description = "PetClinic Amazon Ubuntu Image"
   run_tags = {
     Name = "${coalesce(var.artifactId, var.fallback_artifact)}-${coalesce(var.jenkinsBuildId, var.fallback_build_id)}"
