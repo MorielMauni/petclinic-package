@@ -43,4 +43,12 @@
     {
       "type" : "file",
       "source" : "./petclinic.service",
-      "destination" : "/tmp/petc
+      "destination" : "/tmp/petclinic.service"
+    },
+    {
+      "type": "shell",
+      "script": "./install_app.sh",
+      "execute_command" : "sudo -E -S sh '{{ .Path }}' {{ user `buildId`}}"
+    }
+  ]
+}
