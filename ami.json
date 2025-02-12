@@ -16,7 +16,7 @@
       "instance_type" : "t2.micro",
       "source_ami" : "{{user `source_ami`}}",
       "ssh_username" : "ubuntu",
-      "ami_name" : "{{user `artifactId` | default `fallback_artifact`}}-{{user `jenkinsBuildId` | default `fallback_build_id`}}-{{timestamp}}",
+      "ami_name" : "{{coalesce `artifactId` `fallback_artifact`}}-{{coalesce `jenkinsBuildId` `fallback_build_id`}}-{{timestamp}}",
       "ami_description" : "PetClinic Amazon Ubuntu Image",
       "run_tags" : {
         "Name" : "{{user `artifactId` `fallback_artifact`}}-{{user `jenkinsBuildId` `fallback_build_id`}}"
