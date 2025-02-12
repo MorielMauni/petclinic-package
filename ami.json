@@ -5,8 +5,8 @@
     "buildId" : "",
     "jenkinsBuildId" : "",
     "artifactId" : "",
-    "fallback_artifact" : "petclinic",
-    "fallback_build_id" : "default-build"
+    "fallback_artifact" : "petclinic",  // Default value if artifactId is empty
+    "fallback_build_id" : "default-build" // Default value if jenkinsBuildId is empty
   },
   "builders" : [
     {
@@ -16,7 +16,7 @@
       "instance_type" : "t2.micro",
       "source_ami" : "{{user `source_ami`}}",
       "ssh_username" : "ubuntu",
-      "ami_name" : "{{user `artifactId` `fallback_artifact`}}-{{user `jenkinsBuildId` `fallback_build_id`}}-{{timestamp}}",
+      "ami_name" : "{{user `artifactId` `fallback_artifact`}}-{{user `jenkinsBuildId` `fallback_build_id`}}-{{timestamp}}",  // Ensure valid name
       "ami_description" : "PetClinic Amazon Ubuntu Image",
       "run_tags" : {
         "Name" : "{{user `artifactId` `fallback_artifact`}}-{{user `jenkinsBuildId` `fallback_build_id`}}"
