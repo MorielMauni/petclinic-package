@@ -1,31 +1,33 @@
 { 
   "variables" : {
-      "region" : "us-west-1",
-      "source_ami" : "ami-010c0d7fc6d401cc5",
-      "buildId" : "",
-      "jenkinsBuildId" : "",
-      "artifactId" : ""
+    "region" : "us-west-1",
+    "source_ami" : "ami-010c0d7fc6d401cc5",
+    "buildId" : "",
+    "jenkinsBuildId" : "",
+    "artifactId" : "",
+    "fallback_artifact" : "petclinic",
+    "fallback_build_id" : "default-build"
   },
   "builders" : [
-      {
-        "type" : "amazon-ebs",
-        "profile" : "default",
-        "region" : "{{user `region`}}",
-        "instance_type" : "t2.micro",
-        "source_ami" : "{{user `source_ami`}}",
-        "ssh_username" : "ubuntu",
-        "ami_name" : "{{user `artifactId`}}-{{user `jenkinsBuildId`}}",
-        "ami_description" : "PetClinic Amazon Ubuntu Image",
-        "run_tags" : {
-        "Name" : "{{user `artifactId`}}-{{user `jenkinsBuildId`}}"
-        },
-        "tags" : {
-            "Tool" : "Packer",
-            "Name" : "{{user `artifactId`}}-{{user `jenkinsBuildId`}}",
-            "build_id" : "{{user `artifactId`}}-{{user `jenkinsBuildId`}}",
-            "Author" : "ochoa"
-        }
+    {
+      "type" : "amazon-ebs",
+      "profile" : "default",
+      "region" : "{{user `region`}}",
+      "instance_type" : "t2.micro",
+      "source_ami" : "{{user `source_ami`}}",
+      "ssh_username" : "ubuntu",
+      "ami_name" : "{{user `artifactId` `fallback_artifact`}}-{{user `jenkinsBuildId` `fallback_build_id`}}-{{timestamp}}",
+      "ami_description" : "PetClinic Amazon Ubuntu Image",
+      "run_tags" : {
+        "Name" : "{{user `artifactId` `fallback_artifact`}}-{{user `jenkinsBuildId` `fallback_build_id`}}"
+      },
+      "tags" : {
+        "Tool" : "Packer",
+        "Name" : "{{user `artifactId` `fallback_artifact`}}-{{user `jenkinsBuildId` `fallback_build_id`}}",
+        "build_id" : "{{user `artifactId` `fallback_artifact`}}-{{user `jenkinsBuildId` `fallback_build_id`}}",
+        "Author" : "ochoa"
       }
+    }
   ],
   "provisioners": [
     {
@@ -49,8 +51,4 @@
       "execute_command" : "sudo -E -S sh '{{ .Path }}' {{ user `buildId`}}"
     }
   ]
-
-
-
 }
-
