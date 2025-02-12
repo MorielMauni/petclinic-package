@@ -32,31 +32,15 @@ source "amazon-ebs" "example" {
   instance_type  = "t2.micro"
   source_ami     = var.source_ami
   ssh_username   = "ubuntu"
-  ami_name       = "${regex_replace("${var.artifactId}-${var.jenkinsBuildId}-${timestamp()}", "[^a-zA-Z0-9()\
-
-\[\\]
-
- ./-'_@]", "_")}"
+  ami_name       = "${var.artifactId}-${var.jenkinsBuildId}-${timestamp()}"
   ami_description = "PetClinic Amazon Ubuntu Image"
   run_tags = {
-    Name = "${regex_replace("${var.artifactId}-${var.jenkinsBuildId}", "[^a-zA-Z0-9()\
-
-\[\\]
-
- ./-'_@]", "_")}"
+    Name = "${var.artifactId}-${var.jenkinsBuildId}"
   }
   tags = {
     Tool    = "Packer"
-    Name    = "${regex_replace("${var.artifactId}-${var.jenkinsBuildId}", "[^a-zA-Z0-9()\
-
-\[\\]
-
- ./-'_@]", "_")}"
-    build_id = "${regex_replace("${var.artifactId}-${var.jenkinsBuildId}", "[^a-zA-Z0-9()\
-
-\[\\]
-
- ./-'_@]", "_")}"
+    Name    = "${var.artifactId}-${var.jenkinsBuildId}"
+    build_id = "${var.artifactId}-${var.jenkinsBuildId}"
     Author  = "ochoa"
   }
 }
