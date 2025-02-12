@@ -1,0 +1,56 @@
+{ 
+  "variables" : {
+      "region" : "us-west-1",
+      "source_ami" : "ami-099592454c308b00f",
+      "buildId" : "",
+      "jenkinsBuildId" : "",
+      "artifactId" : ""
+  },
+  "builders" : [
+      {
+        "type" : "amazon-ebs",
+        "profile" : "default",
+        "region" : "{{user `region`}}",
+        "instance_type" : "t2.micro",
+        "source_ami" : "{{user `source_ami`}}",
+        "ssh_username" : "ubuntu",
+        "ami_name" : "{{user `artifactId`}}-{{user `jenkinsBuildId`}}",
+        "ami_description" : "PetClinic Amazon Ubuntu Image",
+        "run_tags" : {
+        "Name" : "{{user `artifactId`}}-{{user `jenkinsBuildId`}}"
+        },
+        "tags" : {
+            "Tool" : "Packer",
+            "Name" : "{{user `artifactId`}}-{{user `jenkinsBuildId`}}",
+            "build_id" : "{{user `artifactId`}}-{{user `jenkinsBuildId`}}",
+            "Author" : "ochoa"
+        }
+      }
+  ],
+  "provisioners": [
+    {
+      "type" : "file",
+      "source" : "./{{user `buildId`}}",
+      "destination" : "/tmp/{{user `buildId`}}"
+    },
+    {
+      "type" : "file",
+      "source" : "./petclinic.sh",
+      "destination" : "/tmp/petclinic.sh"
+    },
+    {
+      "type" : "file",
+      "source" : "./petclinic.service",
+      "destination" : "/tmp/petclinic.service"
+    },
+    {
+      "type": "shell",
+      "script": "./install_app.sh",
+      "execute_command" : "sudo -E -S sh '{{ .Path }}' {{ user `buildId`}}"
+    }
+  ]
+
+
+
+}
+
