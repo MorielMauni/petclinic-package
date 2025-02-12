@@ -32,15 +32,15 @@ source "amazon-ebs" "example" {
   instance_type  = "t2.micro"
   source_ami     = var.source_ami
   ssh_username   = "ubuntu"
-  ami_name       = "${clean_resource_name("${var.artifactId}-${var.jenkinsBuildId}-${timestamp()}")}"
+  ami_name       = "${replace(replace(var.artifactId, "[^a-zA-Z0-9_-]", ""), " ", "_")}-${replace(replace(var.jenkinsBuildId, "[^a-zA-Z0-9_-]", ""), " ", "_")}-${timestamp()}"
   ami_description = "PetClinic Amazon Ubuntu Image"
   run_tags = {
-    Name = "${clean_resource_name("${var.artifactId}-${var.jenkinsBuildId}")}"
+    Name = "${replace(replace(var.artifactId, "[^a-zA-Z0-9_-]", ""), " ", "_")}-${replace(replace(var.jenkinsBuildId, "[^a-zA-Z0-9_-]", ""), " ", "_")}"
   }
   tags = {
     Tool    = "Packer"
-    Name    = "${clean_resource_name("${var.artifactId}-${var.jenkinsBuildId}")}"
-    build_id = "${clean_resource_name("${var.artifactId}-${var.jenkinsBuildId}")}"
+    Name    = "${replace(replace(var.artifactId, "[^a-zA-Z0-9_-]", ""), " ", "_")}-${replace(replace(var.jenkinsBuildId, "[^a-zA-Z0-9_-]", ""), " ", "_")}"
+    build_id = "${replace(replace(var.artifactId, "[^a-zA-Z0-9_-]", ""), " ", "_")}-${replace(replace(var.jenkinsBuildId, "[^a-zA-Z0-9_-]", ""), " ", "_")}"
     Author  = "ochoa"
   }
 }
